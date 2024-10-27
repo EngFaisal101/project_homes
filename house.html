@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en" dir="rtl">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<style>
+
+
+.section-t{
+width:100%;
+display:flex;
+flex-direction: row;
+justify-content:space-between;
+background-color: #fff;
+height:50px;
+margin-top:10px;
+border: .1rem solid rgba(0,0,0,.1);
+}
+
+.section-t div{
+margin:10px;
+}
+
+img{
+max-height:170px;
+}
+
+.loader {
+position: fixed;
+left: 0;
+top: 0;
+width: 100%;
+height: 100%;
+background-color: rgba(255, 255, 255, 0.8); /* خلفية بيضاء مع شفافية */
+display: flex;
+justify-content: center;
+align-items: center;
+font-size: 24px;
+color: #333;
+z-index: 9999; /* تأكد من أن العنصر فوق جميع العناصر الأخرى */
+}
+
+</style>
+</head>
+<body id="body-h">
+<div  id="loader" class="loader">
+<img width="100px" src="img/xx.gif" style="margin-right:40%;margin-top:50vh;">
+</div>
+
+<div class="section-t">
+<div>
+<h4>المنازل</h4>
+</div>
+
+<div class="view_all">
+<a href="index.html"><h2><i class="bi bi-arrow-left"></i></h2></a>
+</div>
+</div>
+<div class="row p-4 services-main" id="que">
+  
+</div>
+
+
+
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+  import {getDatabase,ref,child,get,set,update,remove,query,orderByChild,equalTo} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js"; 
+  const firebaseConfig = {
+  apiKey: "AIzaSyBDYQTOFSv638XJnOqvFuwJGPnQZ3Dy-v8",
+  authDomain: "fir-new-46591.firebaseapp.com",
+  databaseURL: "https://fir-new-46591-default-rtdb.firebaseio.com",
+  projectId: "fir-new-46591",
+  storageBucket: "fir-new-46591.appspot.com",
+  messagingSenderId: "334561214917",
+  appId: "1:334561214917:web:fd48aa3ad5cb34ef740bac"
+  };
+    
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+  document.addEventListener("DOMContentLoaded", function() {
+  fetchData();
+  });
+  
+    
+function fetchData() {
+document.getElementById('body-h').style.overflow='hidden';
+document.getElementById('loader').style.display = 'block';
+var x='منزل';
+const dbRef=ref(db,'agarinfo');
+const queryRef=query(dbRef ,orderByChild('build_type'),equalTo(x));
+get(queryRef).then((snapshot) => {
+if (snapshot.exists()) {
+const data = snapshot.val();
+const rowContainer = document.getElementById("que");
+rowContainer.innerHTML = ''; // مسح أي بيانات موجودة
+for (const userKey in data) {
+const user = data[userKey];
+        
+// إنشاء عنصر العمود
+const colDiv = document.createElement("div");
+colDiv.className = "col-12 col-md-6 col-lg-3 col-sm-4";
+
+// إنشاء عنصر البطاقة
+const card = document.createElement("div");
+card.className = "card text-end border-1 p-4 my-3 mx-auto";
+card.innerHTML = `
+<div class="icon">
+<img src="${user.image}" alt="request" width="100%">
+</div>
+<div class="card-body">
+<h5 class="card-title">${user.build_type} ${user.opration_type}</h5>
+<p style="color:#aaa;" class="card-text">السعر /${user.price}</p>
+<p style="color:#aaa;" class="fw-lighter"><i class="bi bi-geo-alt"></i>${user.prov}/${user.area}/${user.vill}</p>
+<a href="page2.html?userId=${user.key}" class="btn btn-outline-info">معرفة المزيد</a>
+</div>
+`;
+
+// إضافة البطاقة إلى العمود
+colDiv.appendChild(card);
+// إضافة العمود إلى الحاوية
+rowContainer.appendChild(colDiv);
+}
+} else {
+console.log("No data available");
+}
+}).catch((error) => {
+  console.error("Error fetching data: ", erro);
+}).finally(() => {
+document.getElementById('loader').style.display = 'none'; // إخفاء أيقونة التحميل
+document.getElementById('body-h').style.overflow='auto';
+});
+}
+
+
+</script>  
+</body>
+</html>
