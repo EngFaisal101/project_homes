@@ -1,0 +1,120 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@100..900&family=Noto+Sans+Hanunoo&display=swap');
+
+:root{
+    --lg-font: "Noto Sans Arabic",sans-serif;
+    --sm-font: "Noto Sans Arabic",sans-serif;
+    --pink: #0F7DC2;
+}
+
+*{
+    font-family: var(--sm-font);
+
+}
+body{
+    font-family: var(--sm-font);
+}
+
+/* button */
+.bg-primary{
+    background-color:#0F7DC2;
+}
+
+.btn:not(.nav-btns button){
+    background-color: #fff;
+    color: rgb(85, 85, 85);
+    padding: 10px 15px;
+    border-radius: 25px;
+    border: 1px solid rgb(85, 85, 85);
+}
+.btn:not(.nav-btns button):hover{
+    background-color: var(--pink);
+    color: #fff;
+    border-color: var(--pink);
+}
+
+/* text color */
+.text-primary{
+    color: var(--pink)!important;
+}
+
+.navbar-brand img{
+    width: 30px;
+}
+.navbar-brand span{
+    letter-spacing: 2px;
+    font-family: var(--lg-font);
+}
+.nav-link:hover{
+    color: var(--pink)!important;
+}
+.nav-item{
+    border-bottom: 0.5px solid rgba(0, 0, 0, 0.05);
+}
+
+/* header */
+.section-padding {
+	padding: 100px 0;
+}
+.carousel-item {
+	height: 100vh;
+	min-height:150px;
+}
+.carousel-caption {
+	bottom:250px;
+	z-index: 2;
+}
+
+.carousel-caption h5 {
+	font-size:35px;
+	text-transform: uppercase;
+}
+.carousel-caption p {
+	width: 90%;
+	margin: auto;
+	font-size: 18px;
+	line-height: 1.9;
+}
+
+.carousel-inner:before {
+	content: '';
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	background: rgba(0, 0, 0, 0.7);
+	z-index: 1;
+}
+
+/* title */
+.title h2::before{
+    position: absolute;
+    content: "";
+    width: 4px;
+    height: 50px;
+    background-color:#00A1F1;
+    right: -20px;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+        -ms-transform: translateY(-50%);
+            transform: translateY(-50%);
+}
+
+@media only screen and (max-width: 767px) {
+
+	.carousel-caption {
+		bottom: 200px;
+	}
+	.carousel-caption h2 {
+		font-size: 10px;
+	}
+	.carousel-caption a {
+		padding: 10px 15px;
+		font-size: 15px;
+	}
+	.carousel-caption p {
+		width: 100%;
+		line-height: 1.6;
+		font-size: 12px;
+	}
+}
