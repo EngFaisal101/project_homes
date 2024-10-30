@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en" dir="rtl">
+<head>
+  <title>تفاصيل العقار</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- bootstrap css -->
+ <link rel = "stylesheet" href = "css/bootstrap.min.css">
+<style>
+/*تنسيق صفحة عرض الطلب*/
+.d-main{
+display:flex;
+flex-direction:column;
+gap:10px;
+width:100%;
+margin:0 auto;
+background-color: #fefefe;
+padding:100px;
+}
+
+.d-main .title{
+display:flex;
+justify-content:center;
+align-items:center;
+text-align:center;
+padding:10px;
+background-color: #f0f0f0;
+}
+
+.d-main .div-content{
+display:flex;
+flex-direction:row;
+margin-right:10px;
+}
+
+.d-main .d-left{
+margin-right:20%;
+}
+
+.d-main ul li{
+list-style-type:none;
+margin:10px;
+}
+
+.d-main .title-new{
+text-align:center;
+background-color:#f0f0f0;
+padding:5px;
+}
+
+.d-main span{
+font-weight:bold;
+font-size:1rem;
+}
+
+.d-main .ul-checkbox{
+margin:10px;
+}
+
+.d-main .btn-rep{
+border: none; /* Remove borders */
+color: white; /* Add a text color */
+padding:5px;
+cursor: pointer; /* Add a pointer cursor on mouse-over */
+margin:10px;
+text-decoration: none;
+width: fit-content;
+border-radius:5px;
+}
+
+.d-main .ul-btn{
+text-align: center;
+}
+.loader {
+position: fixed;
+left: 0;
+top: 0;
+width: 100%;
+height: 100%;
+background-color: rgba(255, 255, 255, 0.8); /* خلفية بيضاء مع شفافية */
+display: flex;
+justify-content: center;
+align-items: center;
+font-size: 24px;
+color: #333;
+z-index: 9999; /* تأكد من أن العنصر فوق جميع العناصر الأخرى */
+}
+
+@media screen and (max-width: 768px) {
+.d-main {
+padding:0;
+}
+}
+</style>
+</head>
+<body id="body-h">
+<div  id="loader" class="loader">
+<div  style="margin-top:50vh;text-align: center;">
+<img width="100px" src="img/loading.gif"><br>
+</div>
+</div>
+
+    <!-- header -->
+  <header id = "header" class = "carousel slide" data-bs-ride= "carousel" style = "padding-top:10px;" dir="ltr">
+  <div class = "container d-flex align-items-center carousel-inner">
+  <div class = "text-center text-lg-s carousel-item active">
+<img src="img/logo-hero.jpg" width="100%" alt="" />
+  </div>
+  <div class = "text-center text-lg-end  carousel-item">
+<img src="img/logo-hero.jpg" width="100%" alt="" />
+  </div>
+  </div>
+  
+  <button class = "carousel-control-prev" type = "button" data-bs-target="#header" data-bs-slide = "prev">
+  <span class = "carousel-control-prev-icon"></span>
+  </button>
+  <button class = "carousel-control-next" type = "button" data-bs-target="#header" data-bs-slide = "next">
+  <span class = "carousel-control-next-icon"></span>
+  </button>
+  </header>
+
+<!--
+<div class="stimg">
+  <img src="house.jpg" width="50%">
+</div>
+-->
+<div id="d_view">
+
+</div>
+
+
+<!-- bootstrap js -->
+<script src ="js/bootstrap.min.js"></script>
+ <!-- Linking SwiperJS script -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js"; 
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBDYQTOFSv638XJnOqvFuwJGPnQZ3Dy-v8",
+  authDomain: "fir-new-46591.firebaseapp.com",
+  databaseURL: "https://fir-new-46591-default-rtdb.firebaseio.com",
+  projectId: "fir-new-46591",
+  storageBucket: "fir-new-46591.appspot.com",
+  messagingSenderId: "334561214917",
+  appId: "1:334561214917:web:fd48aa3ad5cb34ef740bac"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+document.addEventListener("DOMContentLoaded", fetchData);
+
+function fetchData() {
+document.getElementById('body-h').style.overflow = 'hidden';
+document.getElementById('loader').style.display = 'block';
+  
+const url = new URL(window.location.href);
+const userId = new URLSearchParams(url.search).get('agrId');
+  
+const dbRef = ref(db, 'agarinfo');
+  
+get(dbRef).then(snapshot => {
+const d_main = document.getElementById("d_view");
+d_main.innerHTML = ''; // مسح البيانات الموجودة
+
+if (snapshot.exists()) {
+const data = snapshot.val();
+for (const userKey in data) {
+const datainfo = data[userKey];
+if (datainfo.id && datainfo.id.toString() === userId) {
+const card = createPropertyCard(datainfo);
+d_main.appendChild(card);
+}
+}
+} else {
+d_main.innerHTML = '<h3>not found</h3>';
+}
+}).catch(error => {
+console.error("Error fetching data: ", error);
+}).finally(() => {
+document.getElementById('loader').style.display = 'none';
+document.getElementById('body-h').style.overflow = 'auto';
+});
+}
+
+function createPropertyCard(datainfo) {
+const card = document.createElement("div");
+card.className = "d-main";
+card.innerHTML = `
+<div class='title'><h3>تفاصيل العقار</h3></div>
+<hr>
+<div class="div-content">
+<div><ul>
+<li><span>نوع العقار :</span> ${datainfo.build_type}</li>
+<li><span>الغرض  :</span> ${datainfo.opration_type}</li>
+</ul></div>
+<div class="d-left"><ul>
+<li><span>السعر:</span> ${datainfo.price}</li>
+<li><span>المساحة:</span> ${datainfo.area_number}</li>
+</ul></div>
+</div>
+<div class="title-new"><h3>تفاصيل اخرى </h3></div>
+<div class="div-content">
+<div><ul>
+<li><span> الطوابق  :</span> ${datainfo.floors_total}</li>
+<li><span> الغرف :</span> ${datainfo.room_t}</li>
+<li><span>دورات المياة:</span> ${datainfo.bathroom_t}</li>
+</ul></div>
+<div class="d-left"><ul>
+<li><span> المجالس:</span> ${datainfo.board_t}</li>
+<li><span> الصالات:</span> ${datainfo.loung_t}</li>
+<li><span> المطابخ:</span> ${datainfo.kitch_t}</li>
+</ul></div>
+</div>
+<hr>
+<div class="div-content">
+<div><ul class="ul-checkbox">
+<li><span> الوصف:</span> ${datainfo.description}</li>
+<li><span> التواصل :</span><br> معلومات التواصل </li>
+</ul></div>
+</div>
+<div style="width:100%;margin:10px;">
+<label><b>موقع العقار على خرائط قوقل :</b></label><br>
+<div id="map-${datainfo.id}" style="width:100%; height: 300px;"></div>
+</div>
+`;
+  
+// تهيئة الخريطة بعد إضافة العنصر
+setTimeout(() => {
+initialize(datainfo.lat_line, datainfo.long_line, `map-${datainfo.id}`);
+}, 0);
+
+return card;
+}
+
+function initialize(lat, lon, mapId) {
+const latlng = new google.maps.LatLng(lat, lon);
+const map = new google.maps.Map(document.getElementById(mapId), {
+center: latlng,
+zoom: 13
+});
+  
+new google.maps.Marker({
+map: map,
+position: latlng,
+draggable: false
+});
+}
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCGCQMWprFs1qOxjzh991d_PXQ9_K8w6Co&callback=initMap" async defer></script>
+
+</body>
+</html>
