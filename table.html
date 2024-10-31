@@ -5,7 +5,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- bootstrap css -->
- <link rel = "stylesheet" href = "css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+ <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+  <link rel = "stylesheet" href = "css/bootstrap.min.css">
 <style>
 /*تنسيق صفحة عرض الطلب*/
 .d-main{
@@ -217,9 +219,23 @@ card.innerHTML = `
 <div class="div-content">
 <div><ul class="ul-checkbox">
 <li><span> الوصف:</span> ${datainfo.description}</li>
-<li><span> التواصل :</span><br> معلومات التواصل </li>
-</ul></div>
+</ul>
 </div>
+</div>
+<div class='title'><h3>التواصل</h3></div>
+<div class="div-content">
+<div>
+<ul class="ul-checkbox">
+<li><span> التواصل :</span><br> معلومات التواصل </li>
+<li>
+<a href="tel:779289621"><i class="bi bi-telephone"></i></a>
+<a href="https://api.whatsapp.com/send?phone=711578940&text=مرحبا ، هل يمكنني الاستفسار؟"><i class="bi bi-whatsapp"></i></a>
+<a href="sms:779289621"><i class="bi bi-chat"></i></a>
+</li>
+</ul>
+</div>
+</div>
+
 <div style="width:100%;margin:10px;">
 <label><b>موقع العقار على خرائط قوقل :</b></label><br>
 <div id="map-${datainfo.id}" style="width:100%; height: 300px;"></div>
